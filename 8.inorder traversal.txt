@@ -1,0 +1,135 @@
+Construct an Expression Tree from postfix and prefix expression. Perform recursive and non- recursive In-order traversals. 
+
+\\Constructing Expression Tree from Postfix Expression
+#include <iostream>
+#include <stack>
+using namespace std;
+
+struct Node {
+    char value;
+    Node* left;
+    Node* right;
+    Node(char val) : value(val), left(NULL), right(NULL) {}
+};
+
+Node* constructTreeFromPostfix(string postfix) {
+    stack<Node*> st;
+    for (char ch : postfix) {
+        if (isalpha(ch)) {
+            st.push(new Node(ch));
+        } else {
+            Node* node = new Node(ch);
+            node->right = st.top(); st.pop();
+            node->left = st.top(); st.pop();
+            st.push(node);
+        }
+    }
+    return st.top();
+}
+
+void inorderRecursive(Node* root) {
+    if (root) {
+        inorderRecursive(root->left);
+        cout << root->value << " ";
+        inorderRecursive(root->right);
+    }
+}
+
+void inorderNonRecursive(Node* root) {
+    stack<Node*> st;
+    Node* current = root;
+    while (current != NULL || !st.empty()) {
+        while (current != NULL) {
+            st.push(current);
+            current = current->left;
+        }
+        current = st.top();
+        st.pop();
+        cout << current->value << " ";
+        current = current->right;
+    }
+}
+
+int main() {
+    string postfix = "AB+C*";
+    Node* root = constructTreeFromPostfix(postfix);
+
+    cout << "Recursive In-order Traversal: ";
+    inorderRecursive(root);
+    cout << endl;
+
+    cout << "Non-Recursive In-order Traversal: ";
+    inorderNonRecursive(root);
+    cout << endl;
+
+    return 0;
+}
+
+
+
+
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+struct Node {
+    char value;
+    Node* left;
+    Node* right;
+    Node(char val) : value(val), left(NULL), right(NULL) {}
+};
+
+Node* constructTreeFromPostfix(string postfix) {
+    stack<Node*> st;
+    for (char ch : postfix) {
+        if (isalpha(ch)) {
+            st.push(new Node(ch));
+        } else {
+            Node* node = new Node(ch);
+            node->right = st.top(); st.pop();
+            node->left = st.top(); st.pop();
+            st.push(node);
+        }
+    }
+    return st.top();
+}
+
+void inorderRecursive(Node* root) {
+    if (root) {
+        inorderRecursive(root->left);
+        cout << root->value << " ";
+        inorderRecursive(root->right);
+    }
+}
+
+void inorderNonRecursive(Node* root) {
+    stack<Node*> st;
+    Node* current = root;
+    while (current != NULL || !st.empty()) {
+        while (current != NULL) {
+            st.push(current);
+            current = current->left;
+        }
+        current = st.top();
+        st.pop();
+        cout << current->value << " ";
+        current = current->right;
+    }
+}
+
+int main() {
+    string postfix = "AB+C*";
+    Node* root = constructTreeFromPostfix(postfix);
+
+    cout << "Recursive In-order Traversal: ";
+    inorderRecursive(root);
+    cout << endl;
+
+    cout << "Non-Recursive In-order Traversal: ";
+    inorderNonRecursive(root);
+    cout << endl;
+
+    return 0;
+}
+

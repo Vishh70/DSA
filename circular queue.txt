@@ -1,0 +1,86 @@
+Implement Circular Queue using Circular Linked List. Perform following operations on it. 
+a) Insertion (Enqueue) 
+b) Deletion (Dequeue) 
+c) Display 
+
+
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class CircularQueue {
+private:
+    Node* front;
+    Node* rear;
+
+public:
+    CircularQueue() {
+        front = rear = nullptr;
+    }
+
+    // Insertion (Enqueue)
+    void enqueue(int value) {
+        Node* temp = new Node();
+        temp->data = value;
+        if (front == nullptr) {
+            front = rear = temp;
+            rear->next = front;
+        } else {
+            rear->next = temp;
+            rear = temp;
+            rear->next = front;
+        }
+    }
+
+    // Deletion (Dequeue)
+    void dequeue() {
+        if (front == nullptr) {
+            cout << "Queue is empty" << endl;
+            return;
+        } else if (front == rear) {
+            delete front;
+            front = rear = nullptr;
+        } else {
+            Node* temp = front;
+            front = front->next;
+            rear->next = front;
+            delete temp;
+        }
+    }
+
+    // Display
+    void display() {
+        if (front == nullptr) {
+            cout << "Queue is empty" << endl;
+            return;
+        }
+        Node* temp = front;
+        do {
+            cout << temp->data << " ";
+            temp = temp->next;
+        } while (temp != front);
+        cout << endl;
+    }
+};
+
+int main() {
+    CircularQueue cq;
+    cq.enqueue(10);
+    cq.enqueue(20);
+    cq.enqueue(30);
+    cq.enqueue(40);
+
+    cout << "Queue after enqueuing 10, 20, 30, 40:" << endl;
+    cq.display();
+
+    cq.dequeue();
+    cout << "Queue after dequeuing one element:" << endl;
+    cq.display();
+
+    return 0;
+}

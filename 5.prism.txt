@@ -1,0 +1,60 @@
+Represent a graph of your college campus using adjacency list /adjacency matrix. Nodes should represent the various departments/institutes and links should represent the distance between them. Find minimum spanning tree using 
+a)Using Prims algorithm. 
+
+#include <iostream>
+#include <vector>
+#include <climits>
+using namespace std;
+
+#define INF INT_MAX
+
+void findMST(vector<vector<int>>& graph, int V) {
+    vector<int> key(V, INF);
+    vector<bool> includedInMST(V, false);
+    vector<int> parent(V, -1);
+
+    key[0] = 0;
+
+    for (int i = 0; i < V - 1; i++) {
+        int minKey = INF, minIndex;
+
+        for (int v = 0; v < V; v++) {
+            if (!includedInMST[v] && key[v] < minKey) {
+                minKey = key[v];
+                minIndex = v;
+            }
+        }
+
+        includedInMST[minIndex] = true;
+
+        for (int v = 0; v < V; v++) {
+            if (graph[minIndex][v] && !includedInMST[v] && graph[minIndex][v] < key[v]) {
+                parent[v] = minIndex;
+                key[v] = graph[minIndex][v];
+            }
+        }
+    }
+
+    cout << "Edge\tWeight\n";
+    int totalWeight = 0;
+    for (int i = 1; i < V; i++) {
+        cout << parent[i] << " - " << i << "\t" << graph[i][parent[i]] << "\n";
+        totalWeight += graph[i][parent[i]];
+    }
+    cout << "Total Weight of MST: " << totalWeight << endl;
+}
+
+int main() {
+    int V = 5;
+    vector<vector<int>> graph = {
+        {0, 2, 0, 6, 0},
+        {2, 0, 3, 8, 5},
+        {0, 3, 0, 0, 7},
+        {6, 8, 0, 0, 9},
+        {0, 5, 7, 9, 0}
+    };
+
+    findMST(graph, V);
+
+    return 0;
+}

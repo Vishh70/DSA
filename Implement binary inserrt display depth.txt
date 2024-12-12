@@ -1,0 +1,86 @@
+Implement binary search tree and perform following operations: 
+a) Insert (Handle insertion of duplicate entry) 
+b) Display - Depth of tree 
+
+
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int value;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int val) : value(val), left(nullptr), right(nullptr) {}
+};
+
+class BinarySearchTree {
+private:
+    TreeNode* root;
+
+    TreeNode* insert(TreeNode* node, int value) {
+        if (node == nullptr) {
+            return new TreeNode(value);
+        }
+        if (value < node->value) {
+            node->left = insert(node->left, value);
+        } else if (value > node->value) {
+            node->right = insert(node->right, value);
+        } else {
+            // Handle duplicate entry by ignoring it or updating the node
+            cout << "Duplicate entry: " << value << " already exists in the tree." << endl;
+        }
+        return node;
+    }
+
+    int depth(TreeNode* node) {
+        if (node == nullptr) {
+            return 0;
+        }
+        int leftDepth = depth(node->left);
+        int rightDepth = depth(node->right);
+        return max(leftDepth, rightDepth) + 1;
+    }
+
+    void inorder(TreeNode* node) {
+        if (node != nullptr) {
+            inorder(node->left);
+            cout << node->value << " ";
+            inorder(node->right);
+        }
+    }
+
+public:
+    BinarySearchTree() : root(nullptr) {}
+
+    void insert(int value) {
+        root = insert(root, value);
+    }
+
+    int depth() {
+        return depth(root);
+    }
+
+    void inorder() {
+        inorder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    BinarySearchTree bst;
+    bst.insert(50);
+    bst.insert(30);
+    bst.insert(20);
+    bst.insert(40);
+    bst.insert(70);
+    bst.insert(60);
+    bst.insert(80);
+    bst.insert(70); // Duplicate entry
+
+    cout << "Inorder traversal of the BST: ";
+    bst.inorder();
+
+    cout << "Depth of the tree: " << bst.depth() << endl;
+
+    return 0;
+}

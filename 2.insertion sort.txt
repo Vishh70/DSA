@@ -1,0 +1,56 @@
+Consider a student database of SEIT class. Database contains different fields of every student like Roll No, Name and SGPA. 
+Arrange list of students according to name. (Use Insertion sort) 
+
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Student {
+    int rollNo;
+    string name;
+    float sgpa;
+};
+
+void insertionSort(Student arr[], int n) {
+    for (int i = 1; i < n; i++) {
+        Student key = arr[i];
+        int j = i - 1;
+        while (j >= 0 && arr[j].name > key.name) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = key;
+    }
+}
+
+void printStudents(Student arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << "Roll No: " << arr[i].rollNo << ", Name: " << arr[i].name << ", SGPA: " << arr[i].sgpa << endl;
+    }
+}
+
+int main() {
+    int n;
+    cout << "Enter the number of students: ";
+    cin >> n;
+    Student students[n];
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter details for student " << i + 1 << ":" << endl;
+        cout << "Roll No: ";
+        cin >> students[i].rollNo;
+        cout << "Name: ";
+        cin >> students[i].name;
+        cout << "SGPA: ";
+        cin >> students[i].sgpa;
+    }
+
+    insertionSort(students, n);
+
+    cout << "\nSorted list of students according to names:" << endl;
+    printStudents(students, n);
+
+    return 0;
+}

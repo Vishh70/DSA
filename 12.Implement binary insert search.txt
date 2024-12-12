@@ -1,0 +1,100 @@
+Implement binary search tree and perform following operations: 
+a) Insert (Handle insertion of duplicate entry) 
+b) Search
+
+#include <iostream>
+using namespace std;
+
+struct TreeNode {
+    int value;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode(int val) : value(val), left(nullptr), right(nullptr) {}
+};
+
+class BinarySearchTree {
+private:
+    TreeNode* root;
+
+    TreeNode* insert(TreeNode* node, int value) {
+        if (node == nullptr) {
+            return new TreeNode(value);
+        }
+        if (value < node->value) {
+            node->left = insert(node->left, value);
+        } else if (value > node->value) {
+            node->right = insert(node->right, value);
+        } else {
+            // Handle duplicate entry by ignoring it or updating the node
+            cout << "Duplicate entry: " << value << " already exists in the tree." << endl;
+        }
+        return node;
+    }
+
+    TreeNode* search(TreeNode* node, int value) {
+        if (node == nullptr || node->value == value) {
+            return node;
+        }
+        if (value < node->value) {
+            return search(node->left, value);
+        }
+        return search(node->right, value);
+    }
+
+    void inorder(TreeNode* node) {
+        if (node != nullptr) {
+            inorder(node->left);
+            cout << node->value << " ";
+            inorder(node->right);
+        }
+    }
+
+public:
+    BinarySearchTree() : root(nullptr) {}
+
+    void insert(int value) {
+        root = insert(root, value);
+    }
+
+    TreeNode* search(int value) {
+        return search(root, value);
+    }
+
+    void inorder() {
+        inorder(root);
+        cout << endl;
+    }
+};
+
+int main() {
+    BinarySearchTree bst;
+    bst.insert(50);
+    bst.insert(30);
+    bst.insert(20);
+    bst.insert(40);
+    bst.insert(70);
+    bst.insert(60);
+    bst.insert(80);
+    bst.insert(70); // Duplicate entry
+
+    cout << "Inorder traversal of the BST: ";
+    bst.inorder();
+
+    int searchValue = 40;
+    TreeNode* result = bst.search(searchValue);
+    if (result != nullptr) {
+        cout << "Value " << searchValue << " found in the tree." << endl;
+    } else {
+        cout << "Value " << searchValue << " not found in the tree." << endl;
+    }
+
+    searchValue = 90;
+    result = bst.search(searchValue);
+    if (result != nullptr) {
+        cout << "Value " << searchValue << " found in the tree." << endl;
+    } else {
+        cout << "Value " << searchValue << " not found in the tree." << endl;
+    }
+
+    return 0;
+}
